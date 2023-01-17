@@ -56,7 +56,7 @@ class OtpForm extends Model
     public function verify()
     {
         if (!$this->user->validateOtpByIdentityLoggedIn($this->otp)) {
-            $this->addError('otp', Yii::t('app', 'Otp is invalid!'));
+            $this->addError('otp', Yii::t('app', 'El Código ingresado no es válido o expiró'));
 
             return false;
         } else {
