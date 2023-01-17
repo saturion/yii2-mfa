@@ -81,6 +81,7 @@ public function actions()
             'viewFile' => 'mfa-verify', // the name of view file use to render view. If not set an action id will be use, in this case is `mfa-verify`
             'formVar' => 'model', // the name of variable use to parse [[\vxm\mfa\OtpForm]] object to view file.
             'retry' => true, // allow user retry when type wrong otp
+            'layout' => 'example_name_layout', // the layout name to be used in the verify view
             'successCallback' => [$this, 'mfaPassed'], // callable call when user type valid otp if not set [[yii\web\Controller::goBack()]] will be call.
             'invalidCallback' => [$this, 'mfaOtpInvalid'], // callable call when user type wrong otp if not set and property `retry` is false [[yii\web\User::loginRequired()]] will be call, it should be use for set flash notice to user.
             'retry' => true, // allow user retry when type wrong otp
