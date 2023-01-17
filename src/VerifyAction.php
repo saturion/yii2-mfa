@@ -90,6 +90,11 @@ class VerifyAction extends Action
      * @var string the form class handle end-user data
      */
     public $formClass = OtpForm::class;
+    
+    /**
+     * @var string name of the layout for the rendered view
+     */
+    public $layout = 'main';
 
     /**
      * @inheritDoc
@@ -99,6 +104,8 @@ class VerifyAction extends Action
     {
         $this->ensureUserBehaviorAttached();
         $this->viewFile = $this->viewFile ?? $this->id;
+        
+        $this->controller->layout = $this->layout;
 
         parent::init();
     }
@@ -150,7 +157,7 @@ class VerifyAction extends Action
                 }
             }
         }
-
+        
         return $this->controller->render($this->viewFile, [$this->formVar => $form]);
     }
 

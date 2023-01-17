@@ -190,6 +190,7 @@ class Behavior extends BaseBehavior
      */
     public function getIdentityLoggedIn()
     {
+        //TODO:validar si el usuario ya esta loggeado y se esta verificando, tomar en cuenta sesion actual
         $data = Yii::$app->getSession()->get($this->mfaParam);
 
         if ($data === null) {
