@@ -293,7 +293,7 @@ class Behavior extends BaseBehavior
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\base\NotSupportedException
      */
-    public function validateOtpByIdentityLoggedIn(string $otp)
+    public function validateOtpByIdentityLoggedIn(string $otp, int $window = null)
     {
         $data = $this->getIdentityLoggedIn();
 
@@ -303,7 +303,7 @@ class Behavior extends BaseBehavior
             $secretKey = $identity->getMfaSecretKey();
 
             if (!empty($secretKey)) {
-                return $this->getOtp()->validate($secretKey, $otp);
+                return $this->getOtp()->validate($secretKey, $otp, $window);
             }
         }
 

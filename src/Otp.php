@@ -83,9 +83,9 @@ class Otp extends BaseObject
      *
      * @throws NotSupportedException
      */
-    public function validate(string $secretKey, string $otp)
+    public function validate(string $secretKey, string $otp, int $window = NULL)
     {
-        return $this->createInstance($secretKey)->verify($otp);
+        return $this->createInstance($secretKey)->verify($otp, null, $window);
     }
 
     /**
