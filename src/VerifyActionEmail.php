@@ -62,12 +62,6 @@ class VerifyActionEmail extends Action
      */
     public $invalidCallback;
     
-    
-    /**
-     * @var callable|null before rendering form view, if not set, [[yii\web\User::loginRequired()]] will be call.
-     */
-    public $sendNotificationCallback;
-
     /**
      * @var bool weather allow user can retry when type wrong or not.
      */
@@ -143,20 +137,6 @@ class VerifyActionEmail extends Action
                 }
             }
         }
-        
-        
-        //TODO:convertir en función integrada en Behaviours
-        $data = $this->user->getIdentityLoggedIn();
-
-        if (is_array($data)) {
-            /** @var IdentityInterface $identity */
-            $identity = $data[0];
-            $mfa_data = $identity->usuarioMfa;
-        }
-
-        $otp = $this->user->generateOtpByIdentityLoggedIn();
-        
-        call_user_func($this->sendNotificationCallback, $otp, $mfa_data->auth_email_verify_address);
         
         return $this->controller->render($this->viewFile, [$this->formVar => $form]);
     }
