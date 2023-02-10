@@ -80,6 +80,14 @@ class VerifyAction extends Action
      * ```
      */
     public $invalidCallback;
+    
+    /**
+     * Note that a prover may send the same OTP inside a given time-step window multiple times to a verifier.
+     * The verifier MUST NOT accept the second attempt of the OTP after the successful validation has been issued for the first OTP,
+     * which ensures one-time only use of an OTP.
+     * 
+     */
+    public $oneTimeOnlyUseCallback;
 
     /**
      * @var bool weather allow user can retry when type wrong or not.
@@ -136,7 +144,13 @@ class VerifyAction extends Action
         $form = new $formClass(['user' => $this->user]);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            if ($form->verify()) {
+            
+            $is_otp_first_use = true;
+            if ($this->oneTimeOnlyUseCallback) {
+                $is_otp_first_use = call_user_func($this->oneTimeOnlyUseCallback, $this, $form);
+            }
+            
+            if ($form->verify() && $is_otp_first_use) {
                 $this->user->switchIdentityLoggedIn();
                 $this->user->removeIdentityLoggedIn();
 
@@ -146,6 +160,11 @@ class VerifyAction extends Action
                     return $this->controller->goBack();
                 }
             } else {
+                
+                if (!$is_otp_first_use) {
+                    $form->addError('otp', Yii::t('app', 'El Código ingresado no es válido'));
+                }
+                
                 if (!$this->retry) {
                     $this->user->removeIdentityLoggedIn();
                 }
