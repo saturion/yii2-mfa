@@ -68,6 +68,9 @@ class VerifyActionEmail extends Action
      */
     public $oneTimeOnlyUseCallback;
     
+    public $attemptSuccessCallback;
+    public $attemptFailCallback;
+    
     /**
      * @var bool weather allow user can retry when type wrong or not.
      */
@@ -131,6 +134,10 @@ class VerifyActionEmail extends Action
             if ($form->verify() && $is_otp_first_use) {
                 $this->user->switchIdentityLoggedIn();
                 $this->user->removeIdentityLoggedIn();
+                
+                if ($this->attemptSuccessCallback) {
+                    call_user_func($this->attemptSuccessCallback, $this, $form);
+                }
 
                 if ($this->successCallback) {
                     return call_user_func($this->successCallback, $this, $form);
@@ -138,6 +145,10 @@ class VerifyActionEmail extends Action
                     return $this->controller->goBack();
                 }
             } else {
+                
+                if ($this->attemptFailCallback && $this->retry) {
+                    call_user_func($this->attemptFailCallback, $this, $form);
+                }
                 
                 if (!$is_otp_first_use) {
                     $form->addError('otp', Yii::t('app', 'El Código ingresado no es válido'));
