@@ -19,9 +19,11 @@ interface IdentityInterface extends BaseIdentityInterface
 {
     /**
      * Returns an mfa secret key that will be use to generate and validate otp.
+     * 
+     * @param int|null $auth_type integer representing the current auth method in use
      *
      * @return string|null
      */
-    public function getMfaSecretKey();
+    public function getMfaSecretKey(int $auth_type = null);
 
 }

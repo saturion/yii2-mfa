@@ -144,7 +144,7 @@ class VerifyAction extends Action
     public function run()
     {
         $formClass = $this->formClass;
-        $form = new $formClass(['user' => $this->user]);
+        $form = new $formClass(['user' => $this->user, 'auth_method' => 1]);
         
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             

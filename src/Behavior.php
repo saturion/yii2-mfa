@@ -262,12 +262,14 @@ class Behavior extends BaseBehavior
 
     /**
      * Generate an otp by current user logged in
+     * 
+     * @param int|null $auth_method  integer representing the current auth method in use
      *
      * @return string|null an otp of current user logged in.
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\base\NotSupportedException
      */
-    public function generateOtpByIdentityLoggedIn()
+    public function generateOtpByIdentityLoggedIn(int $auth_method = null)
     {
         $data = $this->getIdentityLoggedIn();
 
@@ -275,7 +277,7 @@ class Behavior extends BaseBehavior
 
             /** @var IdentityInterface $identity */
             $identity = $data[0];
-            $secretKey = $identity->getMfaSecretKey();
+            $secretKey = $identity->getMfaSecretKey($auth_method);
 
             if (!empty($secretKey)) {
                 return $this->getOtp()->generate($secretKey);
@@ -289,19 +291,22 @@ class Behavior extends BaseBehavior
      * Validate an otp by current user logged in
      *
      * @param string $otp need to be validate
+     * @param int $window need to be validate
+     * @param int|null $auth_method  integer representing the current auth method in use
+     * 
      * @return bool weather an otp given is valid with identity logged in
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\base\NotSupportedException
      */
-    public function validateOtpByIdentityLoggedIn(string $otp, int $window = null)
+    public function validateOtpByIdentityLoggedIn(string $otp, int $window = null, int $auth_method = null)
     {
         $data = $this->getIdentityLoggedIn();
 
         if (is_array($data)) {
             /** @var IdentityInterface $identity */
             $identity = $data[0];
-            $secretKey = $identity->getMfaSecretKey();
-
+            $secretKey = $identity->getMfaSecretKey($auth_method);
+ 
             if (!empty($secretKey)) {
                 return $this->getOtp()->validate($secretKey, $otp, $window);
             }

@@ -31,6 +31,13 @@ class OtpForm extends Model
      * @var int The window of TOTP acts as time drift.
      */
     public $window = null;
+    
+    /**
+     * @var int|null $auth_method  integer representing the current auth method in use
+     * 
+     *  values: METODO_AUTH_APP = 1, METODO_EMAIL = 2;
+     */
+    public $auth_method = NULL;
 
     /**
      * @inheritDoc
@@ -60,7 +67,7 @@ class OtpForm extends Model
      */
     public function verify()
     {
-        if (!$this->user->validateOtpByIdentityLoggedIn($this->otp, $this->window)) {
+        if (!$this->user->validateOtpByIdentityLoggedIn($this->otp, $this->window, $this->auth_method)) {
             $this->addError('otp', Yii::t('app', 'El Código ingresado no es válido o expiró'));
 
             return false;

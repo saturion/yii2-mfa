@@ -122,7 +122,8 @@ class VerifyActionEmail extends Action
     public function run()
     {
         $formClass = $this->formClass;
-        $form = new $formClass(['user' => $this->user, 'window' => 2]);
+        $steps = 2;
+        $form = new $formClass(['user' => $this->user, 'window' => $steps, 'auth_method' => 2]);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             
