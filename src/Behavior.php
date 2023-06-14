@@ -150,8 +150,10 @@ class Behavior extends BaseBehavior
         if (!empty($secretKey) && $this->owner->enableSession && !$event->cookieBased) {
             $event->isValid = false;
             $this->saveIdentityLoggedIn($event->identity, $event->duration);
-            $this->verifyRequired();
+            return $this->verifyRequired();
         }
+
+        return Yii::$app->getResponse()->redirect('index');
     }
 
     /**
