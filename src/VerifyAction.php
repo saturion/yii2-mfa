@@ -173,7 +173,7 @@ class VerifyAction extends Action
                 }
 
                 if (!$is_otp_first_use) {
-                    $form->addError('otp', Yii::t('app', 'El Código ingresado no es válido'));
+                    $form->addError('otp', Yii::t('app', 'Das Einmalpasswort ist ungültig'));
                 }
                 
                 if (!$this->retry) {

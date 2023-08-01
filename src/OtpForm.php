@@ -68,7 +68,7 @@ class OtpForm extends Model
     public function verify()
     {
         if (!$this->user->validateOtpByIdentityLoggedIn($this->otp, $this->window, $this->auth_method)) {
-            $this->addError('otp', Yii::t('app', 'El Código ingresado no es válido o expiró'));
+            $this->addError('otp', Yii::t('app', 'Das Einmalpasswort ist ungültig oder abgelaufen'));
 
             return false;
         } else {
